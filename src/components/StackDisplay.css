@@ -1,0 +1,105 @@
+.stack-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stack-display__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stack-display__cells {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+.stack-display__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  min-height: 3rem;
+  border: 2px solid #cbd5e1;
+  border-bottom-width: 1px;
+  background: #f8fafc;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #334155;
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    color 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+}
+
+.stack-display__cell:last-child {
+  border-bottom-width: 2px;
+}
+
+.stack-display__cell--top {
+  background: #8b5cf6;
+  border-color: #7c3aed;
+  color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.3);
+  z-index: 1;
+}
+
+.stack-display__cell--bottom {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* Push animation: new element slides in from above */
+.stack-display__cell--push {
+  animation: stack-push 0.3s ease-out;
+}
+
+@keyframes stack-push {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pop animation: top element fades out and slides up */
+.stack-display__cell--pop {
+  animation: stack-pop 0.3s ease-in forwards;
+}
+
+@keyframes stack-pop {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+/* Replacement animation: brief flash to indicate swap */
+.stack-display__cell--replace {
+  animation: stack-replace 0.3s ease-in-out;
+}
+
+@keyframes stack-replace {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}

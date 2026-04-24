@@ -1,0 +1,67 @@
+.annotation-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 2px solid #cbd5e1;
+  border-radius: 0.5rem;
+  background: #f8fafc;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.annotation-panel__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.annotation-panel__status {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 0.125rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.annotation-panel__text {
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: #334155;
+}
+
+/* Accepted outcome: green */
+.annotation-panel--accepted {
+  border-color: #22c55e;
+  background: #f0fdf4;
+}
+
+.annotation-panel--accepted .annotation-panel__status {
+  background: #22c55e;
+  color: #ffffff;
+}
+
+.annotation-panel--accepted .annotation-panel__text {
+  color: #166534;
+}
+
+/* Rejected / looping outcome: red */
+.annotation-panel--rejected {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.annotation-panel--rejected .annotation-panel__status {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.annotation-panel--rejected .annotation-panel__text {
+  color: #991b1b;
+}

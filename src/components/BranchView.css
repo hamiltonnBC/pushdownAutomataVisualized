@@ -1,0 +1,144 @@
+.branch-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.branch-view__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.branch-view__empty {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  font-style: italic;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.branch-view__tree {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: 20rem;
+  overflow-y: auto;
+}
+
+.branch-view__branch {
+  border: 1px solid #e2e8f0;
+  border-bottom-width: 0;
+  background: #f8fafc;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.branch-view__branch:first-child {
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+.branch-view__branch:last-child {
+  border-bottom-width: 1px;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.branch-view__branch--selected {
+  background: #dbeafe;
+  border-color: #3b82f6;
+  box-shadow: inset 3px 0 0 #3b82f6;
+  z-index: 1;
+}
+
+.branch-view__branch--accepted {
+  background: #dcfce7;
+  border-color: #22c55e;
+}
+
+.branch-view__branch--rejected {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+.branch-view__branch--looping {
+  background: #fef3c7;
+  border-color: #f59e0b;
+}
+
+.branch-view__button {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.875rem;
+  color: #334155;
+  text-align: left;
+}
+
+.branch-view__button:hover {
+  background: #e2e8f0;
+}
+
+.branch-view__button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+.branch-view__id {
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.branch-view__status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+}
+
+.branch-view__status--active {
+  color: #3b82f6;
+  background: #dbeafe;
+}
+
+.branch-view__status--accepted {
+  color: #16a34a;
+  background: #dcfce7;
+}
+
+.branch-view__status--rejected {
+  color: #dc2626;
+  background: #fee2e2;
+}
+
+.branch-view__status--looping {
+  color: #d97706;
+  background: #fef3c7;
+}
+
+.branch-view__transition {
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Indentation for child branches */
+.branch-view__branch--child {
+  padding-left: 1rem;
+}

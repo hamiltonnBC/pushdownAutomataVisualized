@@ -1,0 +1,33 @@
+.control-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding: 1rem 1.5rem;
+  background: #ffffff;
+  border-bottom: 2px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.control-bar__section {
+  display: flex;
+  flex-direction: column;
+}
+
+.control-bar__section--example {
+  flex: 0 1 auto;
+}
+
+.control-bar__section--input {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+
+.control-bar__section--controls {
+  flex: 0 1 auto;
+  align-self: center;
+}

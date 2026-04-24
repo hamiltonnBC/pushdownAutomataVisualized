@@ -1,0 +1,132 @@
+.string-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.string-input__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.string-input__form {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.string-input__field {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 2px solid #cbd5e1;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-family: monospace;
+  color: #334155;
+  background: #f8fafc;
+  transition: border-color 0.2s ease;
+}
+
+.string-input__field:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+}
+
+.string-input__field--invalid {
+  border-color: #ef4444;
+}
+
+.string-input__field--invalid:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.25);
+}
+
+.string-input__submit {
+  padding: 0.5rem 1rem;
+  border: 2px solid #3b82f6;
+  border-radius: 0.375rem;
+  background: #3b82f6;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.string-input__submit:hover {
+  background: #2563eb;
+  border-color: #1d4ed8;
+}
+
+.string-input__submit:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.string-input__error {
+  font-size: 0.8125rem;
+  color: #ef4444;
+  margin: 0;
+}
+
+.string-input__predefined-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+.string-input__predefined {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.string-input__predefined-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.375rem 0.75rem;
+  border: 2px solid #cbd5e1;
+  border-radius: 0.375rem;
+  background: #f8fafc;
+  font-size: 0.8125rem;
+  color: #334155;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.string-input__predefined-btn:hover {
+  border-color: #93c5fd;
+  background: #eff6ff;
+}
+
+.string-input__predefined-btn:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.string-input__predefined-value {
+  font-family: monospace;
+  font-weight: 600;
+}
+
+.string-input__predefined-meta {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.string-input__predefined-meta--accept {
+  color: #22c55e;
+}
+
+.string-input__predefined-meta--reject {
+  color: #ef4444;
+}

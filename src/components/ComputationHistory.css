@@ -1,0 +1,106 @@
+.computation-history {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.computation-history__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.computation-history__empty {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  font-style: italic;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.computation-history__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-height: 20rem;
+  overflow-y: auto;
+}
+
+.computation-history__entry {
+  border: 1px solid #e2e8f0;
+  border-bottom-width: 0;
+  background: #f8fafc;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.computation-history__entry:first-child {
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+.computation-history__entry:last-child {
+  border-bottom-width: 1px;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.computation-history__entry--active {
+  background: #dbeafe;
+  border-color: #3b82f6;
+  box-shadow: inset 3px 0 0 #3b82f6;
+  z-index: 1;
+}
+
+.computation-history__button {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.5rem 0.625rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.875rem;
+  color: #334155;
+  text-align: left;
+}
+
+.computation-history__button:hover {
+  background: #e2e8f0;
+}
+
+.computation-history__button:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+.computation-history__step {
+  font-weight: 700;
+  min-width: 1.5rem;
+  flex-shrink: 0;
+}
+
+.computation-history__rule {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.computation-history__head {
+  color: #64748b;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.computation-history__stack {
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,60 @@
+/* ── PDA Interactive Dashboard – App Shell ── */
+
+.dashboard {
+  display: grid;
+  grid-template-areas:
+    "control  control  control"
+    "tape     stack    state"
+    "transitions transitions annotations"
+    "history  history  branches"
+    "formal   formal   formal";
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  padding: 0 1rem 1.5rem;
+  min-height: 100vh;
+}
+
+/* ── Grid area assignments ── */
+
+.dashboard__control-bar   { grid-area: control; }
+.dashboard__tape          { grid-area: tape; }
+.dashboard__stack         { grid-area: stack; }
+.dashboard__state         { grid-area: state; }
+.dashboard__transitions   { grid-area: transitions; }
+.dashboard__annotations   { grid-area: annotations; }
+.dashboard__history       { grid-area: history; }
+.dashboard__branches      { grid-area: branches; }
+.dashboard__formal        { grid-area: formal; }
+
+/* ── Section wrapper ── */
+
+.dashboard__section {
+  background: var(--bg, #fff);
+  border: 1px solid var(--border, #e5e4e7);
+  border-radius: 8px;
+  padding: 1rem;
+  min-width: 0;
+  overflow: auto;
+}
+
+/* Control bar sits in the grid but keeps its own sticky behavior */
+.dashboard__control-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* ── 2-column layout: 768px – 1023px ── */
+
+@media (max-width: 1023px) {
+  .dashboard {
+    grid-template-areas:
+      "control  control"
+      "tape     tape"
+      "stack    state"
+      "transitions annotations"
+      "history  branches"
+      "formal   formal";
+    grid-template-columns: 1fr 1fr;
+  }
+}
