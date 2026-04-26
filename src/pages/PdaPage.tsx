@@ -1,28 +1,25 @@
 import { useRef, useCallback } from 'react';
-import { useSimulator } from './context/SimulatorContext';
-import { generateAnnotation } from './engine/simulator';
-import { ControlBar } from './components/ControlBar';
-import { TapeDisplay } from './components/TapeDisplay';
-import { StackDisplay } from './components/StackDisplay';
-import { StateControlDisplay } from './components/StateControlDisplay';
-import { TransitionTable } from './components/TransitionTable';
-import { AnnotationPanel } from './components/AnnotationPanel';
-import { ComputationHistory } from './components/ComputationHistory';
-import { BranchView } from './components/BranchView';
-import { BranchExplainer } from './components/BranchExplainer';
-import { FormalDefinitionDisplay } from './components/FormalDefinitionDisplay';
-import './App.css';
+import { SimulatorProvider, useSimulator } from '../context/SimulatorContext';
+import { generateAnnotation } from '../engine/simulator';
+import { ControlBar } from '../components/ControlBar';
+import { TapeDisplay } from '../components/TapeDisplay';
+import { StackDisplay } from '../components/StackDisplay';
+import { StateControlDisplay } from '../components/StateControlDisplay';
+import { TransitionTable } from '../components/TransitionTable';
+import { AnnotationPanel } from '../components/AnnotationPanel';
+import { ComputationHistory } from '../components/ComputationHistory';
+import { BranchView } from '../components/BranchView';
+import { BranchExplainer } from '../components/BranchExplainer';
+import { FormalDefinitionDisplay } from '../components/FormalDefinitionDisplay';
+import '../App.css';
 
 /**
- * App shell for the PDA Interactive Dashboard.
+ * Inner dashboard component that consumes SimulatorContext.
  *
- * Lays out all visualisation components in a responsive CSS Grid.
- * ≥1024 px → 3-column layout
- * 768–1023 px → 2-column layout
- *
- * All components are wired to SimulatorContext for live state.
+ * Contains all the logic previously in App() — refs for animation tracking,
+ * callbacks, and the full CSS Grid layout with all visualization components.
  */
-function App() {
+function PdaDashboard() {
   const { state, dispatch } = useSimulator();
 
   // Track previous stack for StackDisplay animations
@@ -149,4 +146,14 @@ function App() {
   );
 }
 
-export default App;
+/**
+ * PDA page component — wraps the dashboard in SimulatorProvider
+ * so simulator state is scoped to this route only.
+ */
+export function PdaPage() {
+  return (
+    <SimulatorProvider>
+      <PdaDashboard />
+    </SimulatorProvider>
+  );
+}

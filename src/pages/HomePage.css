@@ -1,0 +1,14 @@
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 2rem;
+  text-align: center;
+}
+
+.home-page h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}

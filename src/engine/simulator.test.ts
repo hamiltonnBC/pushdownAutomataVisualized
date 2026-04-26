@@ -12,7 +12,7 @@ import {
 import { nestedParentheses } from '../data/nestedParentheses';
 import { zeroNOneN } from '../data/zeroNOneN';
 import { bInMiddle } from '../data/bInMiddle';
-import type { PDADefinition, SimulatorState, Transition } from '../types';
+import type { SimulatorState, Transition } from '../types';
 
 // ---------------------------------------------------------------------------
 // createInitialState

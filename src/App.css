@@ -5,10 +5,10 @@
   grid-template-areas:
     "control  control  control"
     "tape     stack    state"
+    "transitions transitions formal"
     "transitions transitions annotations"
     "explainer explainer explainer"
-    "history  history  branches"
-    "formal   formal   formal";
+    "history  history  branches";
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
   padding: 0 1rem 1.5rem;
@@ -54,10 +54,10 @@
       "control  control"
       "tape     tape"
       "stack    state"
+      "formal   formal"
       "transitions annotations"
       "explainer explainer"
-      "history  branches"
-      "formal   formal";
+      "history  branches";
     grid-template-columns: 1fr 1fr;
   }
 }
