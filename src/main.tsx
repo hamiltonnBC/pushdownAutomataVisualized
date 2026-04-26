@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { AppLayout } from './components/AppLayout';
 import { HomePage } from './pages/HomePage';
 import { PdaPage } from './pages/PdaPage';
+import { CnfPage } from './pages/CnfPage';
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
@@ -13,6 +14,7 @@ createRoot(document.getElementById('root')!).render(
         <Route element={<AppLayout />}>
           <Route index element={<HomePage />} />
           <Route path="pda" element={<PdaPage />} />
+          <Route path="cnf" element={<CnfPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

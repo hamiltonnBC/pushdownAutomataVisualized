@@ -4,24 +4,53 @@ All components live in `src/components/`. Each has a `.tsx`, `.css`, and `.test.
 
 ## Layout
 
-**App.tsx** arranges everything in a CSS Grid with named areas:
+### AppLayout (`src/components/AppLayout.tsx`)
+
+The top-level layout component rendered by the pathless layout route. Provides the sidebar + content structure for all pages.
+
+```html
+<div class="app-layout">
+  <Sidebar />
+  <main class="app-layout__content">
+    <Outlet />  <!-- Active page renders here -->
+  </main>
+</div>
+```
+
+### Sidebar (`src/components/Sidebar.tsx`)
+
+Collapsible navigation panel on the left side of the viewport.
+
+- Toggle button at the top (SVG chevron)
+- `NavLink` elements for Home (`/`) and PDA (`/pda`)
+- SVG icons for each nav item (house, chip)
+- Active route indicated by left border accent + background tint
+- Local `useState<boolean>(false)` for collapse state (expanded by default)
+- `aria-label="Main navigation"` on the `<nav>` element
+- `aria-expanded` on the toggle button
+- Collapsed: 56px width, labels hidden; Expanded: 260px width
+- CSS transitions on width (0.3s) and opacity (0.2s)
+
+### PDA Dashboard Grid (`src/App.css`)
+
+**PdaPage** (`src/pages/PdaPage.tsx`) arranges visualization components in a CSS Grid with three stacked columns:
 
 ```
-┌─────────────────────────────────────────────┐
-│              ControlBar (sticky)             │
-├──────────────┬──────────┬───────────────────┤
-│  TapeDisplay │  Stack   │ StateControl      │
-│              │ Display  │   Display         │
-├──────────────┴──────────┼───────────────────┤
-│   TransitionTable       │ AnnotationPanel   │
-├─────────────────────────┴───────────────────┤
-│          BranchExplainer (NPDA only)        │
-├─────────────────────────┬───────────────────┤
-│  ComputationHistory     │    BranchView     │
-├─────────────────────────┴───────────────────┤
-│         FormalDefinitionDisplay              │
-└─────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│                 ControlBar (sticky)                  │
+├────────────────┬────────────────┬───────────────────┤
+│  TapeDisplay   │  StackDisplay  │ StateControlDisplay│
+├────────────────┼────────────────┼───────────────────┤
+│ Transition     │    Formal      │  AnnotationPanel  │
+│   Table        │  Definition    │                   │
+│                │                │  BranchExplainer  │
+│ Computation    │                │   (NPDA only)     │
+│   History      │                │                   │
+│                │                │  BranchView       │
+└────────────────┴────────────────┴───────────────────┘
 ```
+
+The three bottom columns use flex stacking (`dashboard__left-stack`, `dashboard__mid-stack`, `dashboard__right-stack`) so each item takes only the vertical space it needs.
 
 Responsive: 3 columns at ≥1024px, 2 columns at 768–1023px.
 

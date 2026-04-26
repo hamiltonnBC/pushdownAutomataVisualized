@@ -15,11 +15,18 @@ export function ControlBar() {
 
   return (
     <div className="control-bar" role="region" aria-label="Simulation control bar">
-      <div className="control-bar__section control-bar__section--example">
+      <div className="control-bar__left">
         <ExampleSelector
           examples={allExamples}
           currentExample={state.pdaDefinition}
           onSelect={(example) => dispatch({ type: 'SELECT_EXAMPLE', payload: example })}
+        />
+        <StepController
+          status={state.status}
+          currentStep={state.currentStep}
+          onStepForward={() => dispatch({ type: 'STEP_FORWARD' })}
+          onStepBackward={() => dispatch({ type: 'STEP_BACKWARD' })}
+          onReset={() => dispatch({ type: 'RESET' })}
         />
       </div>
 
@@ -28,16 +35,6 @@ export function ControlBar() {
           tapeAlphabet={state.pdaDefinition.tapeAlphabet}
           predefinedInputs={state.pdaDefinition.predefinedInputs}
           onSubmit={(input) => dispatch({ type: 'SET_INPUT', payload: input })}
-        />
-      </div>
-
-      <div className="control-bar__section control-bar__section--controls">
-        <StepController
-          status={state.status}
-          currentStep={state.currentStep}
-          onStepForward={() => dispatch({ type: 'STEP_FORWARD' })}
-          onStepBackward={() => dispatch({ type: 'STEP_BACKWARD' })}
-          onReset={() => dispatch({ type: 'RESET' })}
         />
       </div>
     </div>

@@ -2,13 +2,138 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  padding: 2rem;
+  padding: 2.5rem 2rem;
+  max-width: 720px;
+  margin: 0 auto;
+  gap: 2rem;
+}
+
+/* ── Hero ── */
+
+.home-page__hero {
   text-align: center;
 }
 
-.home-page h1 {
+.home-page__title {
   font-size: 2rem;
   font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.75rem;
+}
+
+.home-page__subtitle {
+  font-size: 1.05rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ── About ── */
+
+.home-page__about {
+  text-align: left;
+  line-height: 1.7;
+  color: #334155;
+  font-size: 0.95rem;
+}
+
+.home-page__about p {
+  margin: 0 0 0.75rem;
+}
+
+.home-page__citation {
+  margin: 0.75rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid #3b82f6;
+  background: #f8fafc;
+  border-radius: 0 0.375rem 0.375rem 0;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+/* ── Status ── */
+
+.home-page__section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 0.75rem;
+}
+
+.home-page__status {
+  width: 100%;
+}
+
+.home-page__status-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.home-page__status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  color: #334155;
+  line-height: 1.4;
+}
+
+.home-page__status-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  white-space: nowrap;
+}
+
+.home-page__status-badge--ready {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.home-page__status-badge--wip {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+/* ── Footer ── */
+
+.home-page__footer {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+  width: 100%;
+}
+
+.home-page__footer-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 0.75rem;
+}
+
+.home-page__footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.home-page__footer-badge img {
+  display: block;
+  height: 28px;
+  transition: opacity 0.15s ease;
+}
+
+.home-page__footer-badge:hover img {
+  opacity: 0.8;
 }

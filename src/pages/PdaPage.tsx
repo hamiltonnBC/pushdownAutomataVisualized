@@ -97,51 +97,57 @@ function PdaDashboard() {
         />
       </section>
 
-      {/* ── Row 2: Transition Table · Annotation Panel ── */}
-      <section className="dashboard__transitions dashboard__section">
-        <TransitionTable
-          transitions={state.pdaDefinition.transitions}
-          activeTransition={state.lastAppliedTransition}
-          groupByState={state.pdaDefinition.states.length > 1}
-        />
-      </section>
-
-      <section className="dashboard__annotations dashboard__section">
-        <AnnotationPanel annotation={annotation} status={state.status} />
-      </section>
-
-      {/* ── Nondeterministic branch explanation (only for NPDA) ── */}
-      {state.pdaDefinition.isNondeterministic && (
-        <section className="dashboard__branch-explainer dashboard__section">
-          <BranchExplainer
-            isNondeterministic={state.pdaDefinition.isNondeterministic}
-            status={state.status}
-            branchCount={state.branches.length}
+      {/* ── Left column: Transitions + History stacked ── */}
+      <div className="dashboard__left-stack">
+        <section className="dashboard__transitions dashboard__section">
+          <TransitionTable
+            transitions={state.pdaDefinition.transitions}
+            activeTransition={state.lastAppliedTransition}
+            groupByState={state.pdaDefinition.states.length > 1}
           />
         </section>
-      )}
 
-      {/* ── Row 3: Computation History · Branch View ── */}
-      <section className="dashboard__history dashboard__section">
-        <ComputationHistory
-          history={state.history}
-          currentStep={state.currentStep}
-          onRestoreStep={handleRestoreStep}
-        />
-      </section>
+        <section className="dashboard__history dashboard__section">
+          <ComputationHistory
+            history={state.history}
+            currentStep={state.currentStep}
+            onRestoreStep={handleRestoreStep}
+          />
+        </section>
+      </div>
 
-      <section className="dashboard__branches dashboard__section">
-        <BranchView
-          branches={state.branches}
-          activeBranchId={state.activeBranchId}
-          onSelectBranch={handleSelectBranch}
-        />
-      </section>
+      {/* ── Middle column: Formal Definition ── */}
+      <div className="dashboard__mid-stack">
+        <section className="dashboard__formal dashboard__section">
+          <FormalDefinitionDisplay definition={state.pdaDefinition} />
+        </section>
+      </div>
 
-      {/* ── Row 4: Formal Definition (full width) ── */}
-      <section className="dashboard__formal dashboard__section">
-        <FormalDefinitionDisplay definition={state.pdaDefinition} />
-      </section>
+      {/* ── Right column: Annotations + Branches stacked ── */}
+      <div className="dashboard__right-stack">
+        <section className="dashboard__annotations dashboard__section">
+          <AnnotationPanel annotation={annotation} status={state.status} />
+        </section>
+
+        {/* ── Nondeterministic branch explanation (only for NPDA) ── */}
+        {state.pdaDefinition.isNondeterministic && (
+          <section className="dashboard__branch-explainer dashboard__section">
+            <BranchExplainer
+              isNondeterministic={state.pdaDefinition.isNondeterministic}
+              status={state.status}
+              branchCount={state.branches.length}
+            />
+          </section>
+        )}
+
+        <section className="dashboard__branches dashboard__section">
+          <BranchView
+            branches={state.branches}
+            activeBranchId={state.activeBranchId}
+            onSelectBranch={handleSelectBranch}
+          />
+        </section>
+      </div>
     </div>
   );
 }

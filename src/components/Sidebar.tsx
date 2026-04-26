@@ -50,6 +50,19 @@ export function Sidebar() {
               <span className="sidebar__link-label">5-tuple PDA</span>
             </NavLink>
           </li>
+          <li className="sidebar__item">
+            <NavLink
+              to="/cnf"
+              className={({ isActive }) =>
+                `sidebar__link${isActive ? ' sidebar__link--active' : ''}`
+              }
+            >
+              <svg className="sidebar__link-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 6h16M4 12h8m-8 6h16M14 10l2 2-2 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              <span className="sidebar__link-label">CNF</span>
+            </NavLink>
+          </li>
         </ul>
       </nav>
     </aside>

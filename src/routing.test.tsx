@@ -64,7 +64,7 @@ describe('Routing', () => {
     ).toBeInTheDocument();
 
     // Click the PDA sidebar link to navigate to "/pda"
-    const pdaLink = screen.getByRole('link', { name: /5-tuple pushdown automata/i });
+    const pdaLink = screen.getByRole('link', { name: /5-tuple PDA/i });
     fireEvent.click(pdaLink);
 
     // Verify PdaPage is now rendered

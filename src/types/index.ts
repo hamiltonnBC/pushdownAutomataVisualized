@@ -6,3 +6,5 @@ export type {
   ComputationBranch,
   SimulatorState,
 } from './pda';
+
+export * from './cnf';

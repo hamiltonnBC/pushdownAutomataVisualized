@@ -3,16 +3,14 @@
 .dashboard {
   display: grid;
   grid-template-areas:
-    "control  control  control"
-    "tape     stack    state"
-    "transitions transitions formal"
-    "transitions transitions annotations"
-    "explainer explainer explainer"
-    "history  history  branches";
+    "control      control      control"
+    "tape         stack        state"
+    "left-stack   mid-stack    right-stack";
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 1rem;
-  padding: 0 1rem 1.5rem;
-  min-height: 100vh;
+  grid-template-rows: auto auto 1fr;
+  gap: 0.75rem;
+  padding: 0 0.5rem 1rem;
+  align-items: start;
 }
 
 /* ── Grid area assignments ── */
@@ -21,12 +19,10 @@
 .dashboard__tape          { grid-area: tape; }
 .dashboard__stack         { grid-area: stack; }
 .dashboard__state         { grid-area: state; }
-.dashboard__transitions   { grid-area: transitions; }
-.dashboard__annotations   { grid-area: annotations; }
-.dashboard__branch-explainer { grid-area: explainer; }
-.dashboard__history       { grid-area: history; }
-.dashboard__branches      { grid-area: branches; }
-.dashboard__formal        { grid-area: formal; }
+.dashboard__left-stack    { grid-area: left-stack; display: flex; flex-direction: column; gap: 0.75rem; }
+.dashboard__mid-stack     { grid-area: mid-stack; display: flex; flex-direction: column; gap: 0.75rem; }
+.dashboard__right-stack   { grid-area: right-stack; display: flex; flex-direction: column; gap: 0.75rem; }
+.dashboard__branch-explainer { grid-area: auto; }
 
 /* ── Section wrapper ── */
 
@@ -34,7 +30,7 @@
   background: var(--bg, #fff);
   border: 1px solid var(--border, #e5e4e7);
   border-radius: 8px;
-  padding: 1rem;
+  padding: 0.75rem;
   min-width: 0;
   overflow: auto;
 }
@@ -51,13 +47,11 @@
 @media (max-width: 1023px) {
   .dashboard {
     grid-template-areas:
-      "control  control"
-      "tape     tape"
-      "stack    state"
-      "formal   formal"
-      "transitions annotations"
-      "explainer explainer"
-      "history  branches";
+      "control      control"
+      "tape         tape"
+      "stack        state"
+      "left-stack   mid-stack"
+      "right-stack  right-stack";
     grid-template-columns: 1fr 1fr;
   }
 }

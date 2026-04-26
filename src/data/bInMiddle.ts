@@ -7,7 +7,7 @@ import type { PDADefinition } from '../types';
  * This is a nondeterministic PDA — it guesses when it has reached the middle.
  */
 export const bInMiddle: PDADefinition = {
-  name: 'Strings with b in the middle',
+  name: 'Strings with b in the middle (WIP)',
   description:
     'Accepts strings in {a,b}* of odd length whose middle symbol is b. Nondeterministic.',
   tapeAlphabet: ['a', 'b'],

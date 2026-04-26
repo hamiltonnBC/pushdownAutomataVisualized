@@ -7,7 +7,7 @@ All state management lives in `src/context/SimulatorContext.tsx`.
 The app uses React Context + `useReducer`. A single `SimulatorState` object holds everything. The reducer (`simulatorReducer`) is the only place that calls engine functions.
 
 ```
-SimulatorProvider (wraps entire app in main.tsx)
+SimulatorProvider (wraps PdaPage content, scoped to /pda route)
   └── useReducer(simulatorReducer, initialState)
        └── SimulatorContext.Provider value={{ state, dispatch }}
             └── useSimulator() hook (used by components)

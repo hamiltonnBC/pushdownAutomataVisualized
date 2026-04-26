@@ -19,7 +19,7 @@ describe('ExampleSelector', () => {
     expect(radios).toHaveLength(3);
     expect(radios[0]).toHaveTextContent('Properly Nested Parentheses');
     expect(radios[1]).toHaveTextContent('Strings of the form 0ⁿ1ⁿ');
-    expect(radios[2]).toHaveTextContent('Strings with b in the middle');
+    expect(radios[2]).toHaveTextContent('Strings with b in the middle (WIP)');
   });
 
   it('highlights the currently selected example', () => {
@@ -49,7 +49,7 @@ describe('ExampleSelector', () => {
       />,
     );
 
-    fireEvent.click(screen.getByRole('radio', { name: /Strings with b in the middle/ }));
+    fireEvent.click(screen.getByRole('radio', { name: /Strings with b in the middle (WIP)/ }));
     expect(onSelect).toHaveBeenCalledOnce();
     expect(onSelect).toHaveBeenCalledWith(bMiddle);
   });
@@ -93,6 +93,6 @@ describe('ExampleSelector', () => {
     );
 
     expect(screen.getByRole('radiogroup')).toBeInTheDocument();
-    expect(screen.getByText('PDA Example')).toBeInTheDocument();
+    expect(screen.getByText('PDA Examples')).toBeInTheDocument();
   });
 });
