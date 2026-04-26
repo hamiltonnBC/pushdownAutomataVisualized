@@ -60,9 +60,8 @@ export const bInMiddle: PDADefinition = {
       stackTop: '$',
       toState: 'q2',
       headDirection: 'R',
-      stackReplacement: [],
-      explanation:
-        "Guess: this 'b' is the middle symbol (empty stack → accept if end)",
+      stackReplacement: ['$'],
+      explanation: "Guess: this 'b' is the middle symbol, keep $ on stack",
     },
     {
       fromState: 'q',
@@ -70,8 +69,8 @@ export const bInMiddle: PDADefinition = {
       stackTop: 'S',
       toState: 'q2',
       headDirection: 'R',
-      stackReplacement: [],
-      explanation: "Guess: this 'b' is the middle symbol, pop S",
+      stackReplacement: ['S'],
+      explanation: "Guess: this 'b' is the middle symbol, keep S on stack",
     },
     // State q2: past the middle, pop for each symbol read
     {
@@ -101,15 +100,15 @@ export const bInMiddle: PDADefinition = {
       stackReplacement: [],
       explanation: 'End of input, stack has only $: accept',
     },
-    // Rejection cases in q2
+    // Rejection cases in q2: stack empty (only $ left) but input remains
     {
       fromState: 'q2',
       tapeSymbol: 'a',
       stackTop: '$',
       toState: 'q2',
       headDirection: 'N',
-      stackReplacement: ['$'],
-      explanation: 'More symbols than expected after middle: loop (reject)',
+      stackReplacement: [],
+      explanation: 'Stack empty but input remains: terminate and reject',
     },
     {
       fromState: 'q2',
@@ -117,8 +116,8 @@ export const bInMiddle: PDADefinition = {
       stackTop: '$',
       toState: 'q2',
       headDirection: 'N',
-      stackReplacement: ['$'],
-      explanation: 'More symbols than expected after middle: loop (reject)',
+      stackReplacement: [],
+      explanation: 'Stack empty but input remains: terminate and reject',
     },
     {
       fromState: 'q2',
@@ -157,6 +156,7 @@ export const bInMiddle: PDADefinition = {
     { value: 'abba', expectedResult: 'reject', description: 'even length, no single middle' },
     { value: 'bb', expectedResult: 'reject', description: 'even length' },
     { value: 'ab', expectedResult: 'reject', description: 'even length' },
-    { value: 'aabba', expectedResult: 'reject', description: 'middle is not b' },
+    { value: 'aabba', expectedResult: 'accept', description: 'aa·b·ba (middle is b)' },
+    { value: 'aaaba', expectedResult: 'reject', description: 'middle is a, not b' },
   ],
 };

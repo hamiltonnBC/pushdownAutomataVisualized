@@ -9,6 +9,7 @@ import { TransitionTable } from './components/TransitionTable';
 import { AnnotationPanel } from './components/AnnotationPanel';
 import { ComputationHistory } from './components/ComputationHistory';
 import { BranchView } from './components/BranchView';
+import { BranchExplainer } from './components/BranchExplainer';
 import { FormalDefinitionDisplay } from './components/FormalDefinitionDisplay';
 import './App.css';
 
@@ -111,6 +112,17 @@ function App() {
       <section className="dashboard__annotations dashboard__section">
         <AnnotationPanel annotation={annotation} status={state.status} />
       </section>
+
+      {/* ── Nondeterministic branch explanation (only for NPDA) ── */}
+      {state.pdaDefinition.isNondeterministic && (
+        <section className="dashboard__branch-explainer dashboard__section">
+          <BranchExplainer
+            isNondeterministic={state.pdaDefinition.isNondeterministic}
+            status={state.status}
+            branchCount={state.branches.length}
+          />
+        </section>
+      )}
 
       {/* ── Row 3: Computation History · Branch View ── */}
       <section className="dashboard__history dashboard__section">

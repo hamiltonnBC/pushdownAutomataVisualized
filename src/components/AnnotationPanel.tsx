@@ -22,7 +22,9 @@ export function AnnotationPanel({ annotation, status }: AnnotationPanelProps) {
       ? 'annotation-panel--accepted'
       : status === 'rejected' || status === 'looping'
         ? 'annotation-panel--rejected'
-        : '';
+        : status === 'branching'
+          ? 'annotation-panel--branching'
+          : '';
 
   const statusLabel =
     status === 'accepted'
@@ -31,7 +33,9 @@ export function AnnotationPanel({ annotation, status }: AnnotationPanelProps) {
         ? 'Rejected'
         : status === 'looping'
           ? 'Looping (Rejected)'
-          : null;
+          : status === 'branching'
+            ? 'Choose a Branch'
+            : null;
 
   return (
     <div

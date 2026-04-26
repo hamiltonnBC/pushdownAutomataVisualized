@@ -209,6 +209,10 @@ export function generateAnnotation(
     return 'Rejected: configuration repeated — the PDA is in a loop.';
   }
 
+  if (state.status === 'branching') {
+    return 'Nondeterministic choice: multiple transitions are possible. Select a branch from the Branches panel to continue.';
+  }
+
   return `State ${state.currentState}, head at position ${state.headPosition}, stack: [${state.stack.join(', ')}].`;
 }
 

@@ -6,6 +6,7 @@
     "control  control  control"
     "tape     stack    state"
     "transitions transitions annotations"
+    "explainer explainer explainer"
     "history  history  branches"
     "formal   formal   formal";
   grid-template-columns: 1fr 1fr 1fr;
@@ -22,6 +23,7 @@
 .dashboard__state         { grid-area: state; }
 .dashboard__transitions   { grid-area: transitions; }
 .dashboard__annotations   { grid-area: annotations; }
+.dashboard__branch-explainer { grid-area: explainer; }
 .dashboard__history       { grid-area: history; }
 .dashboard__branches      { grid-area: branches; }
 .dashboard__formal        { grid-area: formal; }
@@ -53,8 +55,16 @@
       "tape     tape"
       "stack    state"
       "transitions annotations"
+      "explainer explainer"
       "history  branches"
       "formal   formal";
     grid-template-columns: 1fr 1fr;
   }
+}
+
+/* Branch explainer has its own styling — remove section wrapper border */
+.dashboard__branch-explainer {
+  border: none;
+  padding: 0;
+  background: transparent;
 }

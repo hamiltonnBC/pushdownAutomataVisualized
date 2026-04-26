@@ -37,7 +37,7 @@ export function StepController({
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const isTerminal =
-    status === 'accepted' || status === 'rejected' || status === 'looping';
+    status === 'accepted' || status === 'rejected' || status === 'looping' || status === 'branching';
 
   const clearPlay = useCallback(() => {
     if (intervalRef.current !== null) {

@@ -234,7 +234,7 @@ describe('simulatorReducer nondeterministic branching', () => {
   //   - Branch 1: go to q2, pop S → stack=['$'] (guess 'b' is the middle)
 
   describe('STEP_FORWARD with nondeterministic PDA', () => {
-    it('creates branches when multiple transitions exist and no transitionIndex', () => {
+    it('creates branches and sets status to branching', () => {
       let state = createInitialState(bInMiddle, 'aba');
       // Step 1: deterministic (reading 'a' with '$' on stack → only one transition)
       state = simulatorReducer(state, { type: 'STEP_FORWARD' });
@@ -244,11 +244,24 @@ describe('simulatorReducer nondeterministic branching', () => {
       // Step 2: nondeterministic (reading 'b' with 'S' on stack → two transitions)
       const result = simulatorReducer(state, { type: 'STEP_FORWARD' });
 
-      // Should create branches but NOT advance main state
+      // Should create branches and pause — main state does NOT advance
       expect(result.branches).toHaveLength(2);
       expect(result.currentStep).toBe(1); // main state unchanged
-      expect(result.headPosition).toBe(state.headPosition); // main state unchanged
-      expect(result.status).toBe('running');
+      expect(result.status).toBe('branching');
+      expect(result.activeBranchId).toBeNull(); // no branch selected yet
+    });
+
+    it('does not step further when status is branching', () => {
+      let state = createInitialState(bInMiddle, 'aba');
+      state = simulatorReducer(state, { type: 'STEP_FORWARD' });
+      state = simulatorReducer(state, { type: 'STEP_FORWARD' }); // branching
+      expect(state.status).toBe('branching');
+      const branchCount = state.branches.length;
+
+      // Another STEP_FORWARD should be a no-op
+      const result = simulatorReducer(state, { type: 'STEP_FORWARD' });
+      expect(result).toBe(state);
+      expect(result.branches).toHaveLength(branchCount); // no new branches
     });
 
     it('assigns unique IDs to each branch', () => {
@@ -327,20 +340,20 @@ describe('simulatorReducer nondeterministic branching', () => {
       state = simulatorReducer(state, { type: 'STEP_FORWARD' });
       expect(state.branches).toHaveLength(0);
 
-      // Step 2: read 'b' with S on stack → nondeterministic, creates branches
+      // Step 2: read 'b' with S on stack → nondeterministic → branching
       state = simulatorReducer(state, { type: 'STEP_FORWARD' });
       expect(state.branches).toHaveLength(2);
+      expect(state.status).toBe('branching');
 
-      // Choose branch 0 (stay in q) to continue
-      state = simulatorReducer(state, {
-        type: 'STEP_FORWARD',
-        payload: { transitionIndex: 0 },
-      });
+      // User picks branch 0 (stay in q, push S)
+      state = simulatorReducer(state, { type: 'SELECT_BRANCH', payload: 'branch-1-0' });
+      expect(state.status).toBe('running');
 
-      // Step 3: read 'b' with S,S on stack → nondeterministic again
+      // Step 3: read 'b' with S,S on stack → nondeterministic again → branching
       state = simulatorReducer(state, { type: 'STEP_FORWARD' });
       // Should have accumulated: 2 from first + 2 from second = 4
       expect(state.branches).toHaveLength(4);
+      expect(state.status).toBe('branching');
     });
   });
 
@@ -348,11 +361,13 @@ describe('simulatorReducer nondeterministic branching', () => {
     it('loads branch snapshots into main state', () => {
       let state = createInitialState(bInMiddle, 'aba');
       state = simulatorReducer(state, { type: 'STEP_FORWARD' });
-      // Create branches at nondeterministic choice
+      // Create branches at nondeterministic choice → branching
       state = simulatorReducer(state, { type: 'STEP_FORWARD' });
       expect(state.branches).toHaveLength(2);
+      expect(state.status).toBe('branching');
 
-      const branch = state.branches[1]; // the "guess middle" branch
+      // Select branch 1 (the "guess middle" branch)
+      const branch = state.branches[1];
       const lastSnapshot = branch.snapshots[branch.snapshots.length - 1];
 
       const result = simulatorReducer(state, {
@@ -366,6 +381,7 @@ describe('simulatorReducer nondeterministic branching', () => {
       expect(result.currentState).toBe(lastSnapshot.currentState);
       expect(result.currentStep).toBe(lastSnapshot.step);
       expect(result.history).toEqual(branch.snapshots);
+      expect(result.status).toBe('running'); // can continue stepping
     });
 
     it('sets status based on branch status for active branch', () => {
@@ -395,8 +411,9 @@ describe('simulatorReducer nondeterministic branching', () => {
     it('can step forward after selecting a branch', () => {
       let state = createInitialState(bInMiddle, 'aba');
       state = simulatorReducer(state, { type: 'STEP_FORWARD' });
-      // Create branches
+      // Create branches → branching
       state = simulatorReducer(state, { type: 'STEP_FORWARD' });
+      expect(state.status).toBe('branching');
 
       // Select the "guess middle" branch (index 1, goes to q2)
       const guessBranch = state.branches[1];
@@ -406,34 +423,45 @@ describe('simulatorReducer nondeterministic branching', () => {
       });
 
       expect(state.currentState).toBe('q2');
+      expect(state.status).toBe('running');
+      const stepBefore = state.currentStep;
 
       // Now step forward from this branch's state
       const result = simulatorReducer(state, { type: 'STEP_FORWARD' });
-      expect(result.currentStep).toBe(state.currentStep + 1);
+      expect(result.currentStep).toBe(stepBefore + 1);
     });
   });
 
   describe('branch status tracking', () => {
     it('marks branch as accepted when it reaches acceptance', () => {
-      // For "aba", the branch that guesses 'b' at position 1 is the middle
-      // should eventually lead to acceptance
       let state = createInitialState(bInMiddle, 'b');
-      // Input "b": reading 'b' with '$' on stack → two transitions
-      // One goes to q2 with empty stack replacement → terminal
-      const result = simulatorReducer(state, { type: 'STEP_FORWARD' });
+      // Step → branching (two choices for 'b' with $ on top)
+      state = simulatorReducer(state, { type: 'STEP_FORWARD' });
+      expect(state.status).toBe('branching');
+      expect(state.branches).toHaveLength(2);
 
-      // Check if any branch is accepted
-      const acceptedBranch = result.branches.find((b) => b.status === 'accepted');
-      // The branch that guesses 'b' is the middle with $ on stack pops $ → empty stack
-      // and head moves to position 1 which is the blank → accepted
-      expect(acceptedBranch).toBeDefined();
+      // Select the "guess middle" branch and step to acceptance
+      const guessBranch = state.branches.find((b) => {
+        const lastSnap = b.snapshots[b.snapshots.length - 1];
+        return lastSnap?.currentState === 'q2';
+      });
+      expect(guessBranch).toBeDefined();
+
+      // Load the branch and step forward to accept
+      let branchState = simulatorReducer(state, {
+        type: 'SELECT_BRANCH',
+        payload: guessBranch!.id,
+      });
+      branchState = simulatorReducer(branchState, { type: 'STEP_FORWARD' });
+      expect(branchState.status).toBe('accepted');
     });
 
     it('updates active branch status when stepping forward on it', () => {
       let state = createInitialState(bInMiddle, 'aba');
       state = simulatorReducer(state, { type: 'STEP_FORWARD' });
-      // Create branches
+      // Create branches → branching
       state = simulatorReducer(state, { type: 'STEP_FORWARD' });
+      expect(state.status).toBe('branching');
 
       // Select the "guess middle" branch
       const guessBranch = state.branches[1];
@@ -450,6 +478,12 @@ describe('simulatorReducer nondeterministic branching', () => {
           state.status === 'looping'
         ) {
           break;
+        }
+        // If branching again, pick first branch
+        if (state.status === 'branching') {
+          const activeBranch = state.branches[state.branches.length - 2]; // first of new pair
+          state = simulatorReducer(state, { type: 'SELECT_BRANCH', payload: activeBranch.id });
+          continue;
         }
         state = simulatorReducer(state, { type: 'STEP_FORWARD' });
       }
@@ -469,57 +503,52 @@ describe('simulatorReducer nondeterministic full simulation', () => {
     let state = createInitialState(bInMiddle, 'b');
 
     // Step 1: read 'b' at head=0, stackTop='$' → nondeterministic
-    // Choose transition index 1 (guess middle: q,b,$ → q2,R,[])
-    // This pops $ → stack empty, head at 1 (blank) → accepted
+    // Choose transition index 1 (guess middle: q,b,$ → q2,R,$) — keeps $ on stack
     state = simulatorReducer(state, {
       type: 'STEP_FORWARD',
       payload: { transitionIndex: 1 },
     });
-
-    expect(state.status).toBe('accepted');
     expect(state.currentState).toBe('q2');
+    expect(state.stack).toEqual(['$']);
+
+    // Step 2: read □ with $ on top → pop $ → accept
+    state = simulatorReducer(state, { type: 'STEP_FORWARD' });
+    expect(state.status).toBe('accepted');
   });
 
-  it('creates branches for "b" at the nondeterministic choice point', () => {
+  it('creates branches for "b" and pauses at the nondeterministic choice point', () => {
     let state = createInitialState(bInMiddle, 'b');
 
-    // Step without specifying transition → should create branches
+    // Step without specifying transition → should create branches and pause
     const result = simulatorReducer(state, { type: 'STEP_FORWARD' });
 
     expect(result.branches).toHaveLength(2);
-    // One branch should be accepted (guess middle with $ → empty stack at end)
-    const acceptedBranch = result.branches.find((b) => b.status === 'accepted');
-    expect(acceptedBranch).toBeDefined();
+    expect(result.status).toBe('branching');
+    expect(result.currentStep).toBe(0); // did NOT advance
   });
 
-  it('reaches looping for "aba" when guessing middle at position 1', () => {
+  it('accepts "aba" when correctly guessing middle at position 1', () => {
     let state = createInitialState(bInMiddle, 'aba');
 
-    // Step 1: read 'a' (deterministic)
+    // Step 1: read 'a' (deterministic) → push S
     state = simulatorReducer(state, { type: 'STEP_FORWARD' });
+    expect(state.stack).toEqual(['$', 'S']);
 
-    // Step 2: read 'b' → choose index 1 (guess middle: q,b,S → q2,R,[])
+    // Step 2: read 'b' → choose index 1 (guess middle: q,b,S → q2,R,S) — keeps S
     state = simulatorReducer(state, {
       type: 'STEP_FORWARD',
       payload: { transitionIndex: 1 },
     });
     expect(state.currentState).toBe('q2');
+    expect(state.stack).toEqual(['$', 'S']);
 
-    // Continue stepping until terminal
-    for (let i = 0; i < 10; i++) {
-      if (
-        state.status === 'accepted' ||
-        state.status === 'rejected' ||
-        state.status === 'looping'
-      ) {
-        break;
-      }
-      state = simulatorReducer(state, { type: 'STEP_FORWARD' });
-    }
+    // Step 3: read 'a' with S on top → pop S
+    state = simulatorReducer(state, { type: 'STEP_FORWARD' });
+    expect(state.stack).toEqual(['$']);
 
-    // This path loops because after guessing middle, the remaining 'a'
-    // finds $ on stack (S was popped by the guess) → looping transition
-    expect(state.status).toBe('looping');
+    // Step 4: read □ with $ on top → pop $ → accept
+    state = simulatorReducer(state, { type: 'STEP_FORWARD' });
+    expect(state.status).toBe('accepted');
   });
 
   it('reaches rejection/looping for "aba" via the wrong branch', () => {

@@ -43,11 +43,12 @@ export function simulatorReducer(
     }
 
     case 'STEP_FORWARD': {
-      // Don't step if already in a terminal status
+      // Don't step if already in a terminal or branching status
       if (
         state.status === 'accepted' ||
         state.status === 'rejected' ||
-        state.status === 'looping'
+        state.status === 'looping' ||
+        state.status === 'branching'
       ) {
         return state;
       }
@@ -104,10 +105,11 @@ export function simulatorReducer(
           },
         );
 
+        // Pause and wait for the user to pick a branch via SELECT_BRANCH.
         return {
           ...state,
           branches: [...state.branches, ...newBranches],
-          status: 'running',
+          status: 'branching',
         };
       }
 

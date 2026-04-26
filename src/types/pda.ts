@@ -102,7 +102,7 @@ export interface SimulatorState {
   /** Current state of the PDA */
   currentState: string;
   /** Simulation status */
-  status: 'ready' | 'running' | 'accepted' | 'rejected' | 'looping';
+  status: 'ready' | 'running' | 'accepted' | 'rejected' | 'looping' | 'branching';
   /** History of computation snapshots */
   history: SimulatorSnapshot[];
   /** Current step number */

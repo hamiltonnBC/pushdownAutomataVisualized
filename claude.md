@@ -1,0 +1,72 @@
+# PDA Interactive Dashboard — AI Context
+
+This is a React + TypeScript single-page application that visualizes Pushdown Automata (PDA) from a theory of computation textbook. It provides step-by-step simulation with animated tape, stack, and state displays.
+
+## Quick Reference
+
+- **Dev server**: `npm run dev`
+- **Build**: `npm run build`
+- **Tests**: `npm test` (261 tests, all should pass)
+- **Type check**: `npx tsc --noEmit`
+
+## Documentation
+
+Read these docs for full details on each part of the system:
+
+- `docs/architecture.md` — Project structure, tech stack, data flow, layer boundaries
+- `docs/data-model.md` — All TypeScript interfaces (PDADefinition, SimulatorState, Transition, etc.), status values, stack replacement rules
+- `docs/engine.md` — Pure simulation functions (createInitialState, applyTransition, detectLoop, etc.), acceptance condition, loop detection
+- `docs/state-management.md` — React Context + useReducer, all actions (STEP_FORWARD, SELECT_BRANCH, etc.), nondeterministic branching flow
+- `docs/components.md` — Every UI component with props, behavior, and layout grid
+- `docs/pda-examples.md` — The three PDA examples, how they work, how to add new ones
+- `docs/testing.md` — Test setup, commands, patterns, key scenarios
+
+## Critical Concepts
+
+### Stack Replacement
+The `stackReplacement` array in a Transition determines what happens to the stack top:
+- `[]` = pop (remove top)
+- `['A']` where A = stackTop = keep (no change)
+- `['A', 'S']` where A = stackTop = push S on top
+- Internally: always pop first, then push all replacement symbols in order
+
+### Nondeterministic Branching
+When a nondeterministic PDA has multiple matching transitions and no `transitionIndex` is specified:
+1. Reducer creates `ComputationBranch` objects for each option
+2. Sets `status: 'branching'` — simulation pauses
+3. Step Forward is disabled
+4. User must click a branch in the BranchView panel
+5. `SELECT_BRANCH` loads that branch and sets `status: 'running'`
+
+This is the trickiest part of the codebase. If you change branching logic, test with the b-in-middle PDA using inputs like "aba", "b", and "aabba".
+
+### Acceptance Condition
+Accept by empty stack: stack must be completely empty (including $) AND head must be at `inputString.length` (on the blank cell past the last input symbol).
+
+### Transition Notation
+Textbook format: `raA → r'ℓw` where r=state, a=tape symbol, A=stack top, r'=new state, ℓ=head direction (R/N), w=stack replacement. In code this maps to the `Transition` interface fields.
+
+## Key Files
+
+| File | Purpose |
+|---|---|
+| `src/types/pda.ts` | All type definitions |
+| `src/engine/simulator.ts` | Pure simulation logic (no React) |
+| `src/context/SimulatorContext.tsx` | Reducer + Context + useSimulator hook |
+| `src/data/bInMiddle.ts` | Nondeterministic PDA (most complex example) |
+| `src/App.tsx` | Root layout, wires context to components |
+| `src/components/ControlBar.tsx` | Composes controls, dispatches actions |
+
+## Common Tasks
+
+### Adding a new PDA example
+See `docs/pda-examples.md` → "Adding a New PDA Example"
+
+### Modifying simulation logic
+Edit `src/engine/simulator.ts` (pure functions) and/or `src/context/SimulatorContext.tsx` (reducer). Run `npm test` to verify.
+
+### Adding a new component
+Create `.tsx`, `.css`, `.test.tsx` in `src/components/`. Follow BEM CSS naming. Add to the grid in `App.tsx` and `App.css`.
+
+### Debugging nondeterministic behavior
+The b-in-middle PDA is the only nondeterministic example. Check `src/engine/bInMiddle-playthrough.test.ts` for end-to-end simulation tests. The key transitions to watch are the ones where `fromState: 'q'` and `tapeSymbol: 'b'` — these are the nondeterministic choice points.

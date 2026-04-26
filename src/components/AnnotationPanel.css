@@ -65,3 +65,18 @@
 .annotation-panel--rejected .annotation-panel__text {
   color: #991b1b;
 }
+
+/* Branching: choose a branch (amber) */
+.annotation-panel--branching {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.annotation-panel--branching .annotation-panel__status {
+  background: #f59e0b;
+  color: #ffffff;
+}
+
+.annotation-panel--branching .annotation-panel__text {
+  color: #92400e;
+}
