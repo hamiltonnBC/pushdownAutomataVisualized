@@ -9,7 +9,7 @@ import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/pushdownAutomataVisualized">
       <Routes>
         <Route element={<AppLayout />}>
           <Route index element={<HomePage />} />
